@@ -1,0 +1,25 @@
+import psycopg2
+from psycopg2 import Error
+id = input('Введите ID ')
+name = input('Введите имя товара ')
+price = input('Введите цену товара ')  
+quantity = input('Введите количество товара ')         
+try:
+    connection = psycopg2.connect(user="postgres",
+                                  password="1488",
+                                  host="127.0.0.1",
+                                  port="5432",
+                                  database="postgres")
+
+
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO product (id, name, price, quantity) VALUES (%s, %s, %s, %s)", (id, name,price,quantity) )
+    connection.commit()
+
+except (Exception, Error) as error:
+    print("Ошибка при работе с PostgreSQL", error)
+finally:
+    if connection:
+        cursor.close()
+        connection.close()
+        print("Соединение с PostgreSQL закрыто")
